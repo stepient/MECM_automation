@@ -54,7 +54,7 @@ Foreach ($AccountName in $AccountNames)
 Foreach ($ComputerName in $MECMServers)
 {
     Try{
-        CreateADComputer -ComputerName $ComputerName -OUPath $MECMOUPath -Verbose -ErrorAction Stop
+        CreateADComputer -ComputerName $ComputerName -OUPath $ServersOUPath -Verbose -ErrorAction Stop
         Write-Verbose "Adding server $ComputerName to the group $MECMServersADGroup"
         Add-ADGroupMember -Identity $MECMServersADGroup -Members $ComputerName$ -ErrorAction Stop
         Write-Verbose "Successfully added server $ComputerName to the group $MECMServersADGroup"
