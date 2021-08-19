@@ -1,0 +1,23 @@
+SQL COMMUNICATIONS
+To ensure proper SQL communication, verify that settings are set accordingly in SQL Network configuration
+
+Open SQL Server Configuration Manager
+Go to SQL Server Network Configuration / Protocols for MSSQLServer
+On the Right Pane, right-click TCP/IP and select Properties
+In the Protocol tab
+Enable: YES
+Listen All : NO
+
+In the IP Addresses tab
+IP1 (which should have your Server IP)
+Active : YES
+Enabled : YES
+
+All other IP and IP ALL
+Active : YES
+Enabled : NO
+TCP Dynamic Ports : Blank value
+TCP Port : 1433
+
+Once the modification has been made, restart the SQL Server Service.
+
