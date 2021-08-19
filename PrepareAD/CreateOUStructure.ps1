@@ -7,13 +7,9 @@
 [CmdletBinding()]
 param(
     [string]$ParentOUPath,#="OU=test,DC=dev,DC=local",
-    [ValidateNotNullOrEmpty()]
     $MECMOUName = "MECM",
-    [ValidateNotNullOrEmpty()]
-    $ComputersOUName = "Servers",
-    [ValidateNotNullOrEmpty()]
+    $ServersOUName = "Servers",
     $GroupsOUName = "Groups",
-    [ValidateNotNullOrEmpty()]
     $AccountsOUName = "Accounts"
 )
 
@@ -41,7 +37,7 @@ $MECMOU = @{
 
 $ComputersOU = @{
     ParentOUPath = $MECMOUPath
-    Name = $ComputersOUName
+    Name = $ServersOUName
 }
 
 $AccountsOU = @{

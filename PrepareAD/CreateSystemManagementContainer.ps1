@@ -3,6 +3,9 @@ param(
     $MECMServersADGroup = "MECM-Servers"
 )
 
+$OldVerbosePreference = $VerbosePreference
+$VerbosePreference = "Continue"
+
 $root = (Get-ADRootDSE).defaultNamingContext
         $arrOU = ($ouParent + ',' + $OUGroup).split(',')    
         $objOU = ''
@@ -51,3 +54,5 @@ $root = (Get-ADRootDSE).defaultNamingContext
             Set-acl -aclobject $acl "ad:CN=System Management,CN=System,$root"
             Write-Verbose -Message "Permissions on container System Management sucessfully granted to group $MECMServersADGroup"
         }
+
+$VerbosePreference = $OldVerbosePreference

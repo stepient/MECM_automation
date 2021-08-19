@@ -2,7 +2,11 @@
 param(
     $ADJoinAccount = "MECM-DomainJoin"
 )
+
+$OldErrorActionPreference = $ErrorActionPreference
 $ErrorActionPreference = "Stop"
+$OldVerbosePreference = $VerbosePreference
+$VerbosePreference = "Continue"
 Try{
     Write-Verbose "Granting permissions to the $ADJoinAccount account"
 
@@ -40,5 +44,7 @@ Try{
 }
 Catch
 {
+    $ErrorActionPreference = $OldErrorActionPreference
+    $VerbosePreference = $OldVerbosePreference
     throw $_
 }
