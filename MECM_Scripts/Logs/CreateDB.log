@@ -1,5 +1,1 @@
 Changed database context to 'master'.
-Msg 1801, Level 16, State 3, Server CM01, Line 4
-Database 'CM_AUR' already exists. Choose a different database name.
-Msg 1828, Level 16, State 4, Server CM01, Line 9
-The logical file name "CM_AUR_2" is already in use. Choose a different name.
