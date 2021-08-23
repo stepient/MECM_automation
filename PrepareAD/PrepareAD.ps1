@@ -119,7 +119,7 @@ $SetSPNParams = @{
     PortNumber = $PortNumber
 }
 
-powershell -file $PSScriptRoot\ExtractMECMArchives.ps1 @ExtractMECMArchivesParams
+#powershell -file $PSScriptRoot\ExtractMECMArchives.ps1 @ExtractMECMArchivesParams zip file is broken, binaries will need to be present in the proper dir
 powershell -file $PSScriptRoot\ExtendADSchema.ps1 @ExtendADSchemaParams
 powershell -file $PSScriptRoot\CreateOUStructure.ps1 @CreateOUStructureParams
 powershell -file $PSScriptRoot\CreateGroupsAndUsers.ps1 @CreateOUStructureParams
