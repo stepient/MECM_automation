@@ -119,13 +119,13 @@ $SetSPNParams = @{
     PortNumber = $PortNumber
 }
 
-#powershell -file $PSScriptRoot\ExtractMECMArchives.ps1 @ExtractMECMArchivesParams zip file is broken, binaries will need to be present in the proper dir
-powershell -file $PSScriptRoot\ExtendADSchema.ps1 @ExtendADSchemaParams
-powershell -file $PSScriptRoot\CreateOUStructure.ps1 @CreateOUStructureParams
-powershell -file $PSScriptRoot\CreateGroupsAndUsers.ps1 @CreateOUStructureParams
-powershell -file $PSScriptRoot\CreateSystemManagementContainer.ps1 @CreateSystemMgmtContainerParams
-powershell -file $PSScriptRoot\GrantPermissionsToADJoinAccount.ps1 @GrantPermissionsToADJoinAccountParams
-powershell -file $PSScriptRoot\ImportMECMServersGPO.ps1 @ImportMECMServersGPOParams
-powershell -file $PSScriptRoot\SetSPN.ps1 @SetSPNParams
+#powershell -executionpolicy bypass -file $PSScriptRoot\ExtractMECMArchives.ps1 @ExtractMECMArchivesParams zip file is broken, binaries will need to be present in the proper dir
+powershell  -executionpolicy bypass -file $PSScriptRoot\ExtendADSchema.ps1 @ExtendADSchemaParams
+powershell  -executionpolicy bypass -file $PSScriptRoot\CreateOUStructure.ps1 @CreateOUStructureParams
+powershell  -executionpolicy bypass -file $PSScriptRoot\CreateGroupsAndUsers.ps1 @CreateOUStructureParams
+powershell  -executionpolicy bypass -file $PSScriptRoot\CreateSystemManagementContainer.ps1 @CreateSystemMgmtContainerParams
+powershell  -executionpolicy bypass -file $PSScriptRoot\GrantPermissionsToADJoinAccount.ps1 @GrantPermissionsToADJoinAccountParams
+powershell  -executionpolicy bypass -file $PSScriptRoot\ImportMECMServersGPO.ps1 @ImportMECMServersGPOParams
+powershell  -executionpolicy bypass -file $PSScriptRoot\SetSPN.ps1 @SetSPNParams
 
 $ErrorActionPreference = $OldErrorActionPreference
