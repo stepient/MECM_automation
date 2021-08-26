@@ -9,4 +9,4 @@ Set-Location $InstallFilesLocation
 Wait-Process adksetup
 & .\adkwinpesetup.exe /quiet /features OptionId.WindowsPreinstallationEnvironment /ceip off /forcerestart /installpath $InstallPath
 Wait-Process adkwinpesetup
-#Restart-Computer -Force
+Restart-Computer -Force
