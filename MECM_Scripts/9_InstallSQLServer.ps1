@@ -25,6 +25,7 @@ Push-Location
 Set-Location $SQLSourceFilesDir
 Try{
 & .\SETUP.EXE /QS /IACCEPTSQLSERVERLICENSETERMS /SQLSVCPASSWORD="$strPassword" /AGTSVCPASSWORD="$strPassword" /ASSVCPASSWORD="str$Password" /ConfigurationFile=$ConfigurationFilePath
+Wait-Process -Name setup
 
 #Install SQL Server update
 Set-Location  $KBLocation
@@ -33,6 +34,7 @@ Wait-Process -Name ($KBFileName -replace '\.exe')
 
 #Install SQL Server Management Studio
 & .\$SSMSSetupFileName /install /passive
+Wait-Process -Name SSMS-Setup-ENU
 
 Pop-Location
 
