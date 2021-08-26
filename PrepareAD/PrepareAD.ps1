@@ -1,9 +1,9 @@
 ﻿param(
 
-    $GroupNamesPath = "$PSScriptRoot\InputFiles\GroupNames.txt"
-    $AccountNamesPath = "$PSScriptRoot\InputFiles\ServiceAccountNames.txt"
-    $MECMAdminsPath = "$PSScriptRoot\InputFiles\MECMAdmins.txt"
-    $MECMServersPath = "$PSScriptRoot\InputFiles\MECMServers.txt"
+    $GroupNamesPath = "$PSScriptRoot\InputFiles\GroupNames.txt",
+    $AccountNamesPath = "$PSScriptRoot\InputFiles\ServiceAccountNames.txt",
+    $MECMAdminsPath = "$PSScriptRoot\InputFiles\MECMAdmins.txt",
+    $MECMServersPath = "$PSScriptRoot\InputFiles\MECMServers.txt",
 
     #CreateOUStructure
     $ParentOUPath = (Get-ADRootDSE).defaultNamingContext, #EDIT AS APPROPRIATE, this OU has to exists. Default value is domain root
