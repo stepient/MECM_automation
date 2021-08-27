@@ -50,7 +50,6 @@ ADD FILE ( NAME = CM_$SiteCode`_2, FILENAME = 'E:\SQL_Database\CM_$SiteCode`_2.m
 ALTER AUTHORIZATION ON DATABASE::CM_$SiteCode TO sa;
 GO
 "@
-
 }
     "Prod"
 {

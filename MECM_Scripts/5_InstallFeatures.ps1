@@ -10,7 +10,8 @@ $Features=@(
     "Web-Asp-Net",
     "Web-Asp-Net45",
     "NET-HTTP-Activation",
-    "NET-Non-HTTP-Activ"
+    "NET-Non-HTTP-Activ",
+    "UpdateServices-Ui"
 )
 
 $Features | Install-WindowsFeature

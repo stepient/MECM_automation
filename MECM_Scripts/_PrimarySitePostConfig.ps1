@@ -46,6 +46,8 @@ Add-CMFallbackStatusPoint -SiteCode $SiteCode -SiteSystemServerName $SiteSystemS
 #Under Databases, Right-click SUSDB, select Properties and click Files
 #Change Owner to SA
 #Change the Autogrowth value to 512MB, click Ok and close SQL MS
+#in IIS console change queue length to 10000
+#adjust the private memory limit
 
 Set-Location $CMDrive
 

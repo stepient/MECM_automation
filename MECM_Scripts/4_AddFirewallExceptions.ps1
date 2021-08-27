@@ -85,10 +85,19 @@ $Rules = @(
 
 )
 
+$FWRules = Get-NetFirewallRule
+
 Foreach ($Rule in $Rules)
 {
-    $Rule
-    New-NetFirewallRule @Rule
+    
+    If ($FWRules.DisplayName -notcontains $Rule.DisplayName)
+    {
+        New-NetFirewallRule @Rule
+    }
+    else
+    {
+        Write-Output "Firewall rule `"$($Rule.DisplayName)`" already exists"
+    }
 }
 
 #@echo ========= SQL Server Ports ===================
