@@ -76,8 +76,6 @@ GO
 Default {"Incorrect value specified as Environment: $Environment"}
 }
 
-$DBFilePath
-$LogPath
 #Create a file to be executed by sqlcmd
 $SQLScript | Out-File $DBFilePath -Force
 
