@@ -2,14 +2,43 @@
 param(
 $SiteCode = "AUR",
 $SiteSystemServerName = "CM01.dev.local",
-$ReportingUserName = "DEV\MECM-SQLReporting",
-$WSUSDir = "G:\Windows_Updates"
+$ReportingUserName = "DEV\MECM-SQLReporting"
 )
 
-$CMDrive = $SiteCode + ":\"
-$ModulePath = 'D:\Program Files\Microsoft Configuration Manager\AdminConsole\bin\ConfigurationManager\ConfigurationManager.psd1'
-Import-Module $ModulePath
-Set-Location $CMDrive
+#
+# Press 'F5' to run this script. Running this script will load the ConfigurationManager
+# module for Windows PowerShell and will connect to the site.
+#
+# This script was auto-generated at '8/30/2021 11:33:13 AM'.
+
+# Uncomment the line below if running in an environment where script signing is 
+# required.
+#Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
+
+# Site configuration
+$SiteCode = "AUR" # Site code 
+$ProviderMachineName = "CM01.dev.local" # SMS Provider machine name
+
+# Customizations
+$initParams = @{}
+#$initParams.Add("Verbose", $true) # Uncomment this line to enable verbose logging
+#$initParams.Add("ErrorAction", "Stop") # Uncomment this line to stop the script on any errors
+
+# Do not change anything below this line
+
+# Import the ConfigurationManager.psd1 module 
+if((Get-Module ConfigurationManager) -eq $null) {
+    Import-Module "$($ENV:SMS_ADMIN_UI_PATH)\..\ConfigurationManager.psd1" @initParams 
+}
+
+# Connect to the site's drive if it is not already present
+if((Get-PSDrive -Name $SiteCode -PSProvider CMSite -ErrorAction SilentlyContinue) -eq $null) {
+    New-PSDrive -Name $SiteCode -PSProvider CMSite -Root $ProviderMachineName @initParams
+}
+
+# Set the current location to be the site code.
+Set-Location "$($SiteCode):\" @initParams
+
 $ErrorActionPreference = "Stop"
 
 Function Add-AURReportingServicePoint {
@@ -49,12 +78,6 @@ Add-CMFallbackStatusPoint -SiteCode $SiteCode -SiteSystemServerName $SiteSystemS
 #in IIS console change queue length to 10000
 #adjust the private memory limit
 
-Set-Location $CMDrive
 
-#adjust the command for HTTPS-only communication
-#possibly it's beeter to configure SUP from the console, 
-#because there is no easy way to automate it with PowerShell
-#and it is a one-off task
-Add-CMSoftwareUpdatePoint -ClientConnectionType Intranet -SiteCode $SiteCode -SiteSystemServerName $SiteSystemServerName -WsusIisSslPort 8531 -WsusIisPort 8530
 
 #you need  to configure SUP settings in site properties now

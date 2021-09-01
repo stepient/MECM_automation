@@ -3,8 +3,8 @@
     $WSUSDir = "D:\WSUS Content",
     [int]$WSUSHTTPPort = 8530,
     [int]$WSUSHTTPSPort = 8531,
-    [int]$WSUSQueueLength = 5000,
-    [int]$WSUSMemoryLimit = 1000
+    [int]$WSUSQueueLength = 2000,
+    [int]$WSUSMemoryLimit = 7372800
 )
 
 $OldErrorActionPreference = $ErrorActionPreference

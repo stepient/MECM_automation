@@ -1,7 +1,7 @@
 ﻿#run it on the primary site server
 param(
     $SiteCode = "AUR",
-    $SUPServerName = "CM02",
+    $SUPServerName = "CM02.dev.local",
     $DBServerName = $env:COMPUTERNAME,
     $DBFilePath = "$PSScriptRoot\WSUSDBConfig.sql",
     $LogPath = "$PSScriptRoot\Logs\WSUSDBConfig.log",
