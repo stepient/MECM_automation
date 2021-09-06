@@ -20,7 +20,7 @@ $NetworkAccessUsername = "DEV\MECM-NetworkAccess"
 $Usernames = @($ClientPushUsername, $DomainJoinUsername, $NetworkAccessUsername)
 
 #Import functions
-. "\$PSScriptRoot\Functions\New-AURCMAccount.ps1"
+. "$PSScriptRoot\Functions\New-AURCMAccount.ps1"
 Push-Location
 
 # Customizations
