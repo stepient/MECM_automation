@@ -1,4 +1,4 @@
-﻿param(
+param(
     $MECMArchiveDir = "C:\MECM_Setup\Install_Files",
     $MECMArchiveEXE = "MEM_Configmgr_2103.exe",
     $MECMExtractProcess = "MEM_Configmgr_2103",
@@ -6,7 +6,7 @@
 )
 
 Write-Verbose "Extracting MECM files to $MECMInstallTargetDir"
-if (-not $(Test-Path $MECMInstallTargetDir))
+if (-not $(Test-Path $MECMInstallTargetDir) -or -not $(Get-ChildItem $MECMInstallTargetDir))
 {
     Try{
         
@@ -24,5 +24,5 @@ if (-not $(Test-Path $MECMInstallTargetDir))
 }
 else
 {
-    Write-Verbose "Directory $MECMInstallTargetDir already exists, aborting operation"
+    Write-Verbose "Directory $MECMInstallTargetDir already contains files, aborting operation"
 }
