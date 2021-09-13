@@ -6,7 +6,7 @@ param(
 )
 
 Write-Output "Extracting SQL files to $SQLInstallTargetDir"
-if (-not $(Test-Path $SQLInstallTargetDir))
+if (-not $(Test-Path $SQLInstallTargetDir) -or -not $(Get-ChildItem $SQLInstallTargetDir))
 {
     Try{
         
