@@ -5,7 +5,7 @@ param(
     $MECMInstallTargetDir = "C:\MECM_Setup\Install_Files\MECM"
 )
 
-Write-Verbose "Extracting MECM files to $MECMInstallTargetDir"
+Write-Output "Extracting MECM files to $MECMInstallTargetDir"
 if (-not $(Test-Path $MECMInstallTargetDir) -or -not $(Get-ChildItem $MECMInstallTargetDir))
 {
     Try{
@@ -14,7 +14,7 @@ if (-not $(Test-Path $MECMInstallTargetDir) -or -not $(Get-ChildItem $MECMInstal
         Set-Location $MECMArchiveDir
         & .\$MECMArchiveEXE /auto $MECMInstallTargetDir
         Wait-Process -Name $MECMExtractProcess
-        Write-Verbose "Successfully extracted MECM install files to $MECMInstallTargetDir"
+        Write-Output "Successfully extracted MECM install files to $MECMInstallTargetDir"
         Pop-Location  
     }
     Catch
@@ -24,5 +24,5 @@ if (-not $(Test-Path $MECMInstallTargetDir) -or -not $(Get-ChildItem $MECMInstal
 }
 else
 {
-    Write-Verbose "Directory $MECMInstallTargetDir already contains files, aborting operation"
+    Write-Output "Directory $MECMInstallTargetDir already contains files, aborting operation"
 }
