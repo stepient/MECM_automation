@@ -5,7 +5,7 @@ param (
     $MECMAdminsPath = "$PSScriptRoot\InputFiles\MECMAdmins.txt",
     $MECMServersPath = "$PSScriptRoot\InputFiles\MECMServers.txt",
 
-    $MECMOUPath = "OU=MECM,DC=dev,DC=local",
+    $MECMOUPath = "OU=MECM," + (Get-ADRootDSE).defaultNamingContext,
     $GroupsOUPath = "OU=Groups" + "," + $MECMOUPath,
     $AccountsOUPath = "OU=Accounts" + "," + $MECMOUPath,
     $ServersOUPath = "OU=Servers" + "," + $MECMOUPath,
