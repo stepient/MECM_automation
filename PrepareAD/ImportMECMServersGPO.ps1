@@ -1,5 +1,5 @@
 param(
-    $MECMOUPath = "OU=MECM,DC=dev,DC=local",
+    $MECMOUPath = "OU=MECM," + (Get-ADRootDSE).defaultNamingContext,
     $ServersOUPath = "OU=Servers" + "," + $MECMOUPath,
     $NewGPOName = "MECM_Servers",
     $BackupGPOName = "MECM_Servers",
