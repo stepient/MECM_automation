@@ -1,9 +1,9 @@
-﻿param(
+param(
 
-    $GroupNamesPath = "$PSScriptRoot\InputFiles\GroupNames.txt",
-    $AccountNamesPath = "$PSScriptRoot\InputFiles\ServiceAccountNames.txt",
-    $MECMAdminsPath = "$PSScriptRoot\InputFiles\MECMAdmins.txt",
-    $MECMServersPath = "$PSScriptRoot\InputFiles\MECMServers.txt",
+    $GroupNamesPath = "$PSScriptRoot\InputFiles\GroupNames.txt",            #DO NOT EDIT
+    $AccountNamesPath = "$PSScriptRoot\InputFiles\ServiceAccountNames.txt", #DO NOT EDIT
+    $MECMAdminsPath = "$PSScriptRoot\InputFiles\MECMAdmins.txt",            #DO NOT EDIT
+    $MECMServersPath = "$PSScriptRoot\InputFiles\MECMServers.txt",          #DO NOT EDIT
 
     #CreateOUStructure
     $ParentOUPath = (Get-ADRootDSE).defaultNamingContext, #EDIT AS APPROPRIATE, this OU has to exists. Default value is domain root
@@ -40,10 +40,8 @@ $GroupsOUPath = $("OU=$GroupsOUName" + "," + $MECMOUPath)
 $AccountsOUPath = $("OU=$AccountsOUName" + "," + $MECMOUPath)
 $ServersOUPath = $("OU=$ServersOUName" + "," + $MECMOUPath)
 
-#ExtractMECMArchives vars
-$MECMArchiveDir = "$PSScriptRoot\BIN"
-$MECMArchive = "X64.zip"
-$MECMArchiveTargetDir = "$MECMArchiveDir\x64"
+#GrantPermissionsOnSystemContainer vars
+$MECMSiteServer = (Get-Content $MECMServersPath)[0]
 
 #ExtendADSchema vars
 $extadschPath = "$PSScriptRoot\BIN\X64"
@@ -97,6 +95,11 @@ $CreateSystemMgmtContainerParams = @{
     MECMServersADGroup = $MECMServersADGroup
 }
 
+#GrantPermissionsOnSystemContainer
+$GrantPermissionsOnSystemContainerParams = @{
+    MECMSiteServer = $MECMSiteServer
+}
+
 #ImportMECMServersGPO
 $ImportMECMServersGPOParams = @{
     MECMOUPath = $MECMOUPath #common
@@ -124,6 +127,7 @@ powershell  -executionpolicy bypass -file $PSScriptRoot\ExtendADSchema.ps1 @Exte
 powershell  -executionpolicy bypass -file $PSScriptRoot\CreateOUStructure.ps1 @CreateOUStructureParams
 powershell  -executionpolicy bypass -file $PSScriptRoot\CreateGroupsAndUsers.ps1 @CreateOUStructureParams
 powershell  -executionpolicy bypass -file $PSScriptRoot\CreateSystemManagementContainer.ps1 @CreateSystemMgmtContainerParams
+powershell  -executionpolicy bypass -file $PSScriptRoot\GrantPermissionsOnSystemContainer.ps1 @GrantPermissionsOnSystemContainerParams
 powershell  -executionpolicy bypass -file $PSScriptRoot\GrantPermissionsToADJoinAccount.ps1 @GrantPermissionsToADJoinAccountParams
 powershell  -executionpolicy bypass -file $PSScriptRoot\ImportMECMServersGPO.ps1 @ImportMECMServersGPOParams
 powershell  -executionpolicy bypass -file $PSScriptRoot\SetSPN.ps1 @SetSPNParams
