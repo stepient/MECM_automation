@@ -74,15 +74,6 @@ $Rules = @(
                     Protocol = "TCP"
                     LocalPort = 1434
                 }
-    
-                @{
-                    DisplayName = "ICMP Allow incoming V4 echo request"
-                    Direction = "Inbound"
-                    Action = "Allow"
-                    Protocol = "TCP"
-                    LocalPort = 1434
-                }
-
 )
 
 $FWRules = Get-NetFirewallRule
