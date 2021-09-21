@@ -1,3 +1,5 @@
+#Improvements: Create and use a migration table
+#Create and import a GPO for workstations and managed servers (FW rules; client push)
 param(
     $MECMOUPath = "OU=MECM," + (Get-ADRootDSE).defaultNamingContext,
     $ServersOUPath = "OU=Servers" + "," + $MECMOUPath,
