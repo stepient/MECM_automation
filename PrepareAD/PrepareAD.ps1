@@ -12,18 +12,13 @@ param(
     $GroupsOUName = "Groups",          #EDIT AS APPROPRIATE OR LEAVE DEFAULT VALUE
     $AccountsOUName = "Accounts",      #EDIT AS APPROPRIATE OR LEAVE DEFAULT VALUE
 
-    #CreateGroupsAndUsers
-    $MECMServersADGroup = (Get-Content $GroupNamesPath | where {$_ -like "*servers*"}), # "MECM-Servers",  #EDIT AS APPROPRIATE OR LEAVE DEFAULT VALUE
-    $MECMAdminsADGroup = (Get-Content $GroupNamesPath | where {$_ -like "*admin*"}), # "MECM-Admins"       #EDIT AS APPROPRIATE OR LEAVE DEFAULT VALUE
+    #GrantPermissionsToADJoinAccount
+    $OUPath = "OU=Workstations,$root", #If the OU does not exist, it will be created
 
     #ImportMECMServersGPO
     $NewGPOName = "MECM_Servers", #EDIT AS APPROPRIATE OR LEAVE DEFAULT VALUE
 
-    #GrantPermissionsToADJoinAccount
-    $ADJoinAccount = (Get-Content $AccountNamesPath | where {$_ -like "*join*"}), #EDIT AS APPROPRIATE OR LEAVE DEFAULT VALUE
-
     #setSPN
-    $SQLServiceAccount = "MECM-SQLService", #EDIT AS APPROPRIATE
     $DBServer = "CM01", #EDIT AS APPROPRIATE
     $PortNumber = 1433 #EDIT AS APPROPRIATE OR LEAVE DEFAULT VALUE
 )
@@ -40,6 +35,11 @@ $GroupsOUPath = $("OU=$GroupsOUName" + "," + $MECMOUPath)
 $AccountsOUPath = $("OU=$AccountsOUName" + "," + $MECMOUPath)
 $ServersOUPath = $("OU=$ServersOUName" + "," + $MECMOUPath)
 
+#CreateGroupsAndUsers vars
+$MECMServersADGroup = ($SecPrincipals | where {$_.type -eq 'group' -and $_.ID -eq 5}).Name
+$MECMIISServersAdGroup = ($SecPrincipals | where {$_.type -eq 'group' -and $_.ID -eq 7}).Name
+$MECMAdminsADGroup = ($SecPrincipals | where {$_.type -eq 'group' -and $_.ID -eq 4}).Name  
+
 #GrantPermissionsOnSystemContainer vars
 $MECMSiteServer = (Get-Content $MECMServersPath)[0]
 
@@ -49,9 +49,17 @@ $extadschPath = "$PSScriptRoot\BIN\X64"
 #ImportMECMServersGPO vars
 $BackupGPOName = "MECM_Servers"
 $GPOBackupPath = "$PSScriptRoot\GPO"
+$SecPrincipalsCSVPath = "$PSScriptRoot\InputFiles\SecurityPrincipals.csv"
+$MigTableSource = "$PSScriptRoot\MigTableTemplate.migtable"
+$MigrationTable = "$PSScriptRoot\MigTable.migtable"
+
+#GarntPermissionsToADJoinAccount vars
+$root = (Get-ADRootDSE).defaultNamingContext
+$ADJoinAccount = ($SecPrincipals | where {$_.type -eq 'user' -and $_.ID -eq 2}).Name
 
 #SetSPN vars
 $DomainName = (Get-ADDomain).DnsRoot
+$SQLServiceAccount = ($SecPrincipals | where {$_.type -eq 'user' -and $_.ID -eq 0}).Name
 
 #Param blocks for each script
 
@@ -96,17 +104,20 @@ $CreateSystemMgmtContainerParams = @{
 }
 
 #GrantPermissionsOnSystemContainer
-$GrantPermissionsOnSystemContainerParams = @{
+$GrantPermissionsOnSystemManagementContainerParams = @{
     MECMSiteServer = $MECMSiteServer
 }
 
 #ImportMECMServersGPO
 $ImportMECMServersGPOParams = @{
     MECMOUPath = $MECMOUPath #common
-    ServersOUPath = $ServersOUName #common
+    ServersOUPath = $ServersOUPath
     NewGPOName = $NewGPOName
     BackupGPOName = $BackupGPOName
     GPOBackupPath = $GPOBackupPath
+    SecPrincipalsCSVPath = $SecPrincipalsCSVPath
+    MigTableSource = $MigTableSource
+    MigrationTable = $MigrationTable
 }
 
 #GrantPermissionsToADJoinAccount
@@ -123,13 +134,13 @@ $SetSPNParams = @{
 }
 
 #powershell -executionpolicy bypass -file $PSScriptRoot\ExtractMECMArchives.ps1 @ExtractMECMArchivesParams zip file is broken, binaries will need to be present in the proper dir
-powershell  -executionpolicy bypass -file $PSScriptRoot\ExtendADSchema.ps1 @ExtendADSchemaParams
-powershell  -executionpolicy bypass -file $PSScriptRoot\CreateOUStructure.ps1 @CreateOUStructureParams
-powershell  -executionpolicy bypass -file $PSScriptRoot\CreateGroupsAndUsers.ps1 @CreateOUStructureParams
-powershell  -executionpolicy bypass -file $PSScriptRoot\CreateSystemManagementContainer.ps1 @CreateSystemMgmtContainerParams
-powershell  -executionpolicy bypass -file $PSScriptRoot\GrantPermissionsOnSystemContainer.ps1 @GrantPermissionsOnSystemContainerParams
-powershell  -executionpolicy bypass -file $PSScriptRoot\GrantPermissionsToADJoinAccount.ps1 @GrantPermissionsToADJoinAccountParams
-powershell  -executionpolicy bypass -file $PSScriptRoot\ImportMECMServersGPO.ps1 @ImportMECMServersGPOParams
-powershell  -executionpolicy bypass -file $PSScriptRoot\SetSPN.ps1 @SetSPNParams
+powershell -executionpolicy bypass -file $PSScriptRoot\ExtendADSchema.ps1 @ExtendADSchemaParams
+powershell -executionpolicy bypass -file $PSScriptRoot\CreateOUStructure.ps1 @CreateOUStructureParams
+powershell -executionpolicy bypass -file $PSScriptRoot\CreateGroupsAndUsers.ps1 @CreateOUStructureParams
+powershell -executionpolicy bypass -file $PSScriptRoot\CreateSystemManagementContainer.ps1 @CreateSystemMgmtContainerParams
+powershell -executionpolicy bypass -file $PSScriptRoot\GrantPermissionsOnSystemManagementContainer.ps1 @GrantPermissionsOnSystemManagementContainerParams
+powershell -executionpolicy bypass -file $PSScriptRoot\GrantPermissionsToADJoinAccount.ps1 @GrantPermissionsToADJoinAccountParams
+powershell -executionpolicy bypass -file $PSScriptRoot\ImportMECMServersGPO.ps1 @ImportMECMServersGPOParams
+powershell -executionpolicy bypass -file $PSScriptRoot\SetSPN.ps1 @SetSPNParams
 
 $ErrorActionPreference = $OldErrorActionPreference
