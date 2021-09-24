@@ -1,0 +1,7 @@
+Name,Description,Type,ID
+MECM-SQLService,SQL service account,user,0
+MECM-SQLReporting,Reporting services account,user,1
+MECM-DomainJoin,Domain join account,user,2
+MECM-ClientPush,Client push install account,user,3
+MECM-Admins,MECM administrators group,group,4
+MECM-Servers,MECM servers group,group,5
