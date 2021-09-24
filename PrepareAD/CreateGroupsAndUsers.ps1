@@ -1,15 +1,15 @@
 
 param (
-    $GroupNamesPath = "$PSScriptRoot\InputFiles\GroupNames.txt",
-    $AccountNamesPath = "$PSScriptRoot\InputFiles\ServiceAccountNames.txt",
     $MECMAdminsPath = "$PSScriptRoot\InputFiles\MECMAdmins.txt",
     $MECMServersPath = "$PSScriptRoot\InputFiles\MECMServers.txt",
+    $SecPrincipalsCSVPath = "$PSScriptRoot\InputFiles\SecurityPrincipals.csv", #groups and users
 
     $MECMOUPath = "OU=MECM," + (Get-ADRootDSE).defaultNamingContext,
     $GroupsOUPath = "OU=Groups" + "," + $MECMOUPath,
     $AccountsOUPath = "OU=Accounts" + "," + $MECMOUPath,
     $ServersOUPath = "OU=Servers" + "," + $MECMOUPath,
     $MECMServersADGroup = "MECM-Servers", #($GroupNames | where {$_ -like "*servers*"}),
+    $MECMIISServersAdGroup = "MECM-IISServers",
     $MECMAdminsADGroup = "MECM-Admins" #($GroupNames | where {$_ -like "*admins*"})
 )
 
@@ -21,8 +21,9 @@ $VerbosePreference = "Continue"
 . "$PSScriptRoot\Functions\CreateADUser.ps1"
 . "$PSScriptRoot\Functions\CreateADComputer.ps1"
 
-$GroupNames = (Get-Content $GroupNamesPath).Trim()
-$AccountNames = (Get-Content $AccountNamesPath).Trim()
+$SecPrincipals = Import-Csv $SecPrincipalsCSVPath -Delimiter ','
+$GroupNames = $SecPrincipals | where {$_.type -eq 'group'} | select -ExpandProperty Name
+$AccountNames = $SecPrincipals | where {$_.type -eq 'user'} | select -ExpandProperty Name
 $MECMAdmins = (Get-Content $MECMAdminsPath).Trim()
 $MECMServers = (Get-Content $MECMServersPath).Trim()
 
