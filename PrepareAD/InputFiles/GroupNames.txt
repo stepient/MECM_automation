@@ -1,3 +1,0 @@
-MECM-Admins
-MECM-Servers
-MECM-IISServers
