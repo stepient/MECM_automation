@@ -6,26 +6,7 @@
         $Password,
         [string]$OUPath
     )
-   <# 
-    $UserObj = Get-ADUser -Filter "name -eq '$UserName'" -ErrorAction SilentlyContinue
-    Write-Verbose -Message "Creating AD user $UserName in OU $OUPath"
-    if ($UserObj -eq $null)
-    {
-        New-ADUser -Name $UserName -AccountPassword $Password -CannotChangePassword $true -ChangePasswordAtLogon $false -PasswordNeverExpires $true -Path $OUPath -enabled $true
-        Write-Verbose "Successfully created AD User $UserName in OU $OUPath"
-    }
-    else
-    {
-        Write-Verbose -Message ("User account $UserName already exists")
-        Try{
-            Write-Verbose "Moving $Username to $OUPath"
-            $UserObj | Move-ADObject -TargetPath $OUPath -ErrorAction Stop
-        }
-        Catch{
-            throw $_
-        }
-    } 
-    #>
+
     Write-Verbose -Message "Creating AD User $UserName in OU $OUPath"
 
     Try{
@@ -48,7 +29,7 @@
         }
     }
     Catch [Microsoft.ActiveDirectory.Management.ADIdentityNotFoundException]{
-        New-ADUser -Name $UserName -AccountPassword $Password -CannotChangePassword $true -ChangePasswordAtLogon $false -PasswordNeverExpires $true -Path $OUPath -enabled $true
+        New-ADUser -Name $UserName -AccountPassword $Password -ChangePasswordAtLogon $false -PasswordNeverExpires $true -Path $OUPath -enabled $true
         Write-Verbose "Successfully created AD User $UserName in OU $OUPath"
     }
     Catch{
