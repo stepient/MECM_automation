@@ -1,6 +1,9 @@
 
 param (
-    [switch]$Interactive = $true, #Default is true, can be changed to false when the script is part of a workflow
+    #Default is true, can be changed to false when the script is part of a workflow
+    #Do not type cast this parameter as switch or boolean,
+    #or you won't be able to overwrite its value when calling the script from another script
+    $Interactive = $true, 
 
     [string]$SQLAccountPass,       #Pass as an encrypted value in non-interactive mode only
     [string]$SQLReportingPass,     #Pass as an encrypted value in non-interactive mode only
@@ -16,12 +19,13 @@ param (
     $MECMOUPath = "OU=MECM," + (Get-ADRootDSE).defaultNamingContext,
     $GroupsOUPath = "OU=Groups" + "," + $MECMOUPath,
     $AccountsOUPath = "OU=Accounts" + "," + $MECMOUPath,
-    $ServersOUPath = "OU=Servers" + "," + $MECMOUPath,
+    $ServersOUPath = "OU=Servers" + "," + $MECMOUPath
 
-    $MECMServersADGroup = "MECM-Servers",
-    $MECMIISServersAdGroup = "MECM-IISServers",
-    $MECMAdminsADGroup = "MECM-Admins"
+    #$MECMServersADGroup = "MECM-Servers",
+    #$MECMIISServersAdGroup = "MECM-IISServers",
+    #$MECMAdminsADGroup = "MECM-Admins"
 )
+$Interactive
 
 $OldVerbosePreference = $VerbosePreference
 $VerbosePreference = "Continue"
@@ -31,9 +35,15 @@ $VerbosePreference = "Continue"
 . "$PSScriptRoot\Functions\CreateADUser.ps1"
 . "$PSScriptRoot\Functions\CreateADComputer.ps1"
 
+
 $SecPrincipals = Import-Csv $SecPrincipalsCSVPath -Delimiter ','
+
 $GroupNames = $SecPrincipals | where {$_.type -eq 'group'} | select -ExpandProperty Name
-$Accounts = $SecPrincipals | where {$_.type -eq 'user'} #| select -ExpandProperty Name
+$MECMServersADGroup = ($SecPrincipals | where {$_.type -eq 'group' -and $_.ID -eq 5}).Name
+$MECMIISServersAdGroup = ($SecPrincipals | where {$_.type -eq 'group' -and $_.ID -eq 7}).Name
+$MECMAdminsADGroup = ($SecPrincipals | where {$_.type -eq 'group' -and $_.ID -eq 4}).Name  
+$Accounts = $SecPrincipals | where {$_.type -eq 'user'}
+
 $MECMAdmins = (Get-Content $MECMAdminsPath).Trim()
 $MECMServers = (Get-Content $MECMServersPath).Trim()
 
@@ -51,7 +61,8 @@ Foreach ($GroupName in $GroupNames){
 
 Foreach ($Account in $Accounts){
     
-    If ($interactive){
+    If ($Interactive -eq $true){
+    "Interactive"
         #put this in script, not in function, on purpose in case the passwords are pulled from another source in zero touch deployment of MECM
         Try{
 
@@ -64,20 +75,23 @@ Foreach ($Account in $Accounts){
             throw $_
         }
     } else {
+    "Noninteractive"
     
         Switch($Account.ID) {
 
-        0 {$PasswordStr = $SQLAccountPass}
-        1 {$PasswordStr = $SQLReportingPass}
-        2 {$PasswordStr = $DomainJoinPass}
-        3 {$PasswordStr = $ClientPushPass}
-        6 {$PasswordStr = $MECMAdminPass}
-        8 {$PasswordStr = $NetworkAccessPass}
-        Default {"Unable to match ID $_ to any parameter"}
+            0 {$PasswordStr = $SQLAccountPass}
+            1 {$PasswordStr = $SQLReportingPass}
+            2 {$PasswordStr = $DomainJoinPass}
+            3 {$PasswordStr = $ClientPushPass}
+            6 {$PasswordStr = $MECMAdminPass}
+            8 {$PasswordStr = $NetworkAccessPass}
+            Default {"Unable to match ID $_ to any parameter"}
 
         }
 
         $UserName = $Account.Name
+            $UserName
+            $PasswordStr
         $Password = $PasswordStr | ConvertTo-SecureString -AsPlainText -Force
     }
 
