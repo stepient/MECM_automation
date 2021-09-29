@@ -28,27 +28,22 @@ $SecPrincipalIDs = @(
         Name = "MECM-SQLService"
         ID = 0
     }
-
     @{
         Name = "MECM-SQLReporting"
         ID = 1
     }
-
     @{
         Name = "MECM-DomainJoin"
         ID = 2
     }
-
     @{
         Name = "MECM-ClientPush"
         ID = 3
     }
-
     @{
         Name = "MECM-Admins"
         ID = 4
     }
-
     @{
         Name = "MECM-Servers"
         ID = 5
@@ -81,7 +76,7 @@ Catch [System.ArgumentException]{
     Try{
 
         $GPOOutput = Import-GPO @params 
-        Write-Verbose "Successfully imported GPO $NewGPOName from $GPOBackupPath and linked it to the $ServersOUPath OU"
+        Write-Verbose "Successfully imported GPO $NewGPOName from $GPOBackupPath"
     }
     Catch{
 
