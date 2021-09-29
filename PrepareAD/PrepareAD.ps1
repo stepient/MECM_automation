@@ -6,7 +6,7 @@ param(
     $MECMServersPath = "$PSScriptRoot\InputFiles\MECMServers.txt",             #DO NOT EDIT
     $SecPrincipalsCSVPath = "$PSScriptRoot\InputFiles\SecurityPrincipals.csv", #DO NOT EDIT
 
-    [switch]$Interactive = $false,
+    $Interactive = $false,
     [string]$SQLAccountPass = 'Welcome123',       #Pass as an encrypted value in non-interactive mode only
     [string]$SQLReportingPass ='Welcome123',     #Pass as an encrypted value in non-interactive mode only
     [string]$DomainJoinPass ='Welcome123',       #Pass as an encrypted value in non-interactive mode only
