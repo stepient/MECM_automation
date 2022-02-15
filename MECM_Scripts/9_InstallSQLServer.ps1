@@ -3,7 +3,7 @@
 param(
 $SQLSourceFilesDir = "C:\MECM_Setup\Install_Files\SQL\SETUP",
 $ConfigurationFilePath = "$PSScriptRoot\SQLConfigFile_Lab.ini",
-$SQLServiceAccount = "dev\MECM-SQLService",
+$SQLServiceAccount = "test\MECM-SQLService",
 $KBLocation = "C:\MECM_Setup\Install_Files",
 $KBFileName = "SQLServer2019-KB5003249-x64.EXE",
 $SSMSSetupFileName = "SSMS-Setup-ENU.EXE"
