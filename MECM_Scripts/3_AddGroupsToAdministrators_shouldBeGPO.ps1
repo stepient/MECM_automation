@@ -1,5 +1,5 @@
 ﻿#this should be done with a GPO
-$Domain = "dev"
+$Domain = "test"
 $Groups = "MECM-Admins", "MECM-SiteServers"
 
 $Groups | ForEach-Object { Add-LocalGroupMember -Group "Administrators" -Member "$Domain\$_"}
