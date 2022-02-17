@@ -1,7 +1,7 @@
 ﻿# Source: https://argonsys.com/microsoft-cloud/library/install-configmgr-cb-1902-using-powershell/
 
 param(
-$serviceAccount = "dev\MECM-SQLReporting",
+$serviceAccount = "test\MECM-SQLReporting",
 $useBuiltInServiceAccount = $false
 )
 
